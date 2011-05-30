@@ -13,7 +13,8 @@
 ---
 # 
 # Then What Is It?
-## Let's look at an example
+## Let's look at a few
+## examples
 ---
 #
 # The Anatomy of a Jump
@@ -100,11 +101,25 @@
 ### Not taking variable jump or
 ### air steering into account
 ---
+#
 # Gameplay Mechanics
 * Direct player control
 * Highly tuned
+* Instant feedback
+---
+#
 ## Examples
 * Vehicle steering
 * Balance beam
-* Push blocks
+* Melee combat
+---
+# TODO: Weapons
+---
+# TODO: Systems
+---
+# TOOD: Level Walk-through
+---
+# TODO: Level Programming
+---
+# TODO: Law of the Loop
 ---
