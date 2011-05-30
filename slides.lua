@@ -4,14 +4,14 @@ local gfx = love.graphics
 
 module("slides", package.seeall)
 
-local slide_table = {}
+slide_table = {}
 local fonts = {}
 local slide_index = 1
 
 function load(filename)
 
     -- warp
-    slide_index = 11
+    slide_index = 1
 
     local top_y_offset = 50
 
@@ -25,6 +25,11 @@ function load(filename)
                         x_offset = 0,
                         align = "center"}
 
+    local h3_metrics = {y_size = 30,
+                        y_offset = 20,
+                        x_offset = 0,
+                        align = "center"}
+
     local bullet_metrics = {y_size = 50,
                             y_offset = 20,
                             x_offset = 150,
@@ -35,6 +40,7 @@ function load(filename)
 
     fonts = {h1 = gfx.newFont("FreeSansBold.otf", h1_metrics.y_size),
              h2 = gfx.newFont("FreeSansBold.otf", h2_metrics.y_size),
+             h3 = gfx.newFont("FreeSansBold.otf", h3_metrics.y_size),
              bullet = gfx.newFont("FreeSansBold.otf", bullet_metrics.y_size),}
 
     local slide = {}
@@ -49,9 +55,19 @@ function load(filename)
     -- @ custom_table
     -- ---
     for line in io.lines(filename) do
-        if line:sub(1,2) == "##" then
+        if line:sub(1,3) == "###" then
+            -- h3
+            local text = line:sub(5)
+            insert(slide, {type = "text",
+                           font = fonts.h3,
+                           text = text,
+                           x = h3_metrics.x_offset,
+                           y = y,
+                           align = h3_metrics.align})
+            y = y + h3_metrics.y_size + h3_metrics.y_offset
+        elseif line:sub(1,2) == "##" then
             -- h2
-            local text = line:sub(3)
+            local text = line:sub(4)
             insert(slide, {type = "text",
                            font = fonts.h2,
                            text = text,

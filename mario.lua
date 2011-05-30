@@ -1,8 +1,16 @@
 local gfx = love.graphics
 local joy = love.joystick
+local aud = love.audio
 local insert = table.insert
 
 module("mario", package.seeall)
+
+tune = {air_steer = false,
+        variable_jump = false,
+        air_steer_speed = 3,
+        jump_vy = -15,
+        ground_speed = 5,
+        gravity = 50}
 
 local function make_block(x, y)
     return {x = x, y = y}
@@ -16,7 +24,6 @@ function enter()
     ground_blocks = {}
 
     ground_y = 10
-    gravity = 10
 
     -- fill up blocks
     for i = -20, 20 do
@@ -24,7 +31,17 @@ function enter()
         insert(ground_blocks, make_block(i, ground_y + 2))
     end
 
-    mario = {x = 3, y = 3, vx = 0, vy = 0, on_ground = false, right = true}
+    mario = {x = 3, y = 3, vx = 0, vy = 0, state = "air", right = true}
+
+    -- HACK:  use slide title to flip tuning flags
+    local slide = slides.slide_table[slides.current_slide()]
+    if slide[1].text == "Jump with Air Control" then
+        tune.air_steer = true
+    elseif slide[1].text == "Variable Jump with Air Control" then
+        tune.air_steer = true
+        tune.variable_jump = true
+    end
+        
 end
 
 function exit()
@@ -45,35 +62,62 @@ function update(dt)
     end
 
     local stick_vx = 0
-    if mario.on_ground then
+    if mario.state == "ground" then
 
-        stick_vx = stick_x * 5
+        stick_vx = stick_x * tune.ground_speed
 
-        -- jump
+        -- check for jump button
         if joy.isDown(0, 11) then
-            print("jump!")
-            mario.vx = stick_x * 5
-            mario.vy = -10
-            mario.on_ground = false
+            aud.play(mario_jump)
+
+            mario.vx = stick_x * tune.ground_speed
+
+            if tune.variable_jump then
+                mario.vy = tune.jump_vy
+            else
+                -- give a bit of a boost to compensate for the lack of variable jump
+                mario.vy = tune.jump_vy * 1.7
+            end
+
+            mario.state = "air"
+            mario.air_phase = 1
+        end
+    elseif mario.air_phase == 1 and mario.state == "air" then
+        -- check for jump release
+        if not joy.isDown(0, 11) then
+            mario.air_phase = 2
         end
     end
 
-    if mario.on_ground then
+    if mario.state == "ground" then
         mario.vx = stick_vx
+        mario.x = mario.x + mario.vx * dt
+    elseif mario.state == "air" then
+        if tune.air_steer then
+            mario.x = mario.x + (mario.vx + stick_x * tune.air_steer_speed) * dt
+        else
+            mario.x = mario.x + mario.vx * dt
+        end
     end
 
-    mario.x = mario.x + mario.vx * dt
-    mario.y = mario.y + mario.vy * dt + 0.5 * gravity * dt * dt
+    local accel = tune.gravity
+    if tune.variable_jump and mario.state == "air" and mario.air_phase == 1 then
+        accel = accel / 3
+    end
+
+    mario.y = mario.y + mario.vy * dt + 0.5 * accel * dt * dt
 
     mario.vx = mario.vx
-    mario.vy = mario.vy + gravity * dt
+    mario.vy = mario.vy + accel * dt
 
     if mario.vy > 0 and mario.y > ground_y then
-        mario.on_ground = true
+        mario.state = "ground"
         mario.y = ground_y
         mario.vy = 0
-    else
-        mario.on_ground = false
+    end
+
+    if mario.state == "air" and mario.vy > 0 then
+        mario.air_phase = 3
     end
 end
 

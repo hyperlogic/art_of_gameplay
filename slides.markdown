@@ -51,5 +51,60 @@
 #
 # How does it feel?
 ---
+### Jump
 @ mario
+---
+#
+# How does it feel?
+* Hard to make short jumps
+* Easy to overshoot target
+* Hit head on ceiling
+---
+#
+# Air Control
+* Limited stick control
+* Add small amount to v_h
+---
+### Jump with Air Control
+@ mario
+---
+# Variable Jump
+* Holding button = higher jump
+* Three phases
+* Phase 1: light gravity
+* Phase 2: normal gravity
+* Phase 3: after apex
+---
+### Variable Jump with Air Control
+@ mario
+---
+# 
+# Jump Tuning
+* v_v, v_h, a_g
+* Hard to tune
+* Values not orthogonal
+---
+## Programmers: 
+* v_v - vertical velocity
+* v_h - horizontal velocity
+* a_g - acceleration due to gravity
+## Designers:
+* x_j - max distance for jump
+* y_j - max height of jump
+* t_h - total time in air
+---
+# How to Convert?
+! vx.png
+! vy.png
+! ag.png
+### Not taking variable jump or
+### air steering into account
+---
+# Gameplay Mechanics
+* Direct player control
+* Highly tuned
+## Examples
+* Vehicle steering
+* Balance beam
+* Push blocks
 ---

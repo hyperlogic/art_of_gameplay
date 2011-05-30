@@ -24,6 +24,7 @@ function love.load()
     for i = 1, 9 do
         table.insert(sounds, aud.newSource("powerup0"..i..".ogg", "static"))
     end
+    mario_jump = aud.newSource("mario_jump.ogg", "static")
 
     slides.load("slides.markdown")
 
@@ -64,8 +65,6 @@ function love.keyreleased(key, unicode)
 end
 
 function love.joystickpressed(joystick, button)
-
-    print(button)
 
     -- left bumper
     if button == 8 then
