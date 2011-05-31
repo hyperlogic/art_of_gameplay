@@ -113,13 +113,84 @@
 * Balance beam
 * Melee combat
 ---
-# TODO: Weapons
+#
+# Weapons
+* FPS or TPS
+* Create
+* Experiment
+* Tune
 ---
-# TODO: Systems
+#
+# Typical Weapons
+* Rail Gun
+* Shot Gun
+* Plasma Gun
+* Chain Gun
 ---
-# TOOD: Level Walk-through
+# Tune Values
+* Rate of fire
+* Clip Size
+* Reload Time
+* Spin up, Spin Down
+* Overheat
 ---
-# TODO: Level Programming
+#
+# Implementation
+* Big ball of ifs
+* Coroutines
+* State Machines
 ---
-# TODO: Law of the Loop
+#
+# State Machine
+* Finite # of states
+* Finite # of transitions
+* Process
+* Enter / Exit
+---
+# Example
+! sm01.png
+---
+# More States
+! sm02.png
+---
+# Full State Machine
+! sm03.png
+---
+#
+# Benefits of SM
+* Easy to extend
+* Locality
+* Easy to debug
+---
+#
+# Gameplay Systems
+* Breakables
+* Armor
+* Skill Tree
+* Drop Tables
+---
+#
+# Level Scripting
+* One off
+* Add suspense
+* Streamline play-through
+* Puzzle setups
+---
+#
+# Gameplay Programming
+* Mechanics
+* Systems
+* Level Scripting
+---
+#
+# Law of the Loop
+* iterate
+* iterate
+* iterate
+---
+#
+# Source Code
+## ajt@hyperlogic.org
+## www.github.com/art_of_gameplay
+## www.love2d.org
 ---

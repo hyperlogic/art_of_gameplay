@@ -35,13 +35,17 @@ end
 function update(dt)
     local x, y = joy.getAxes(0)
 
-    -- dead spot
-    local dead_spot = 0.3
-    if math.abs(x) < dead_spot then
-        x = 0
-    end
-    if math.abs(y) < dead_spot then
-        y = 0
+    if x and y then
+        -- dead spot
+        local dead_spot = 0.3
+        if math.abs(x) < dead_spot then
+            x = 0
+        end
+        if math.abs(y) < dead_spot then
+            y = 0
+        end
+    else
+        x, y = 0, 0
     end
 
     -- stick vel

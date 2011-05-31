@@ -32,7 +32,7 @@ function love.load()
     images.sky = gfx.newImage("sky.png")
     quads.sky = gfx.newQuad(0,0,1,1,1,1)
 
-    -- custom_draw 
+    love.mouse.setVisible(false)
 end
 
 function love.update(dt)
@@ -58,6 +58,9 @@ function love.keypressed(key, unicode)
     elseif key == "left" then
         slides.prev()
         play_goofy_sound()
+    elseif key == "escape" then
+        -- quit!
+        love.event.push('q')
     end
 end
 
