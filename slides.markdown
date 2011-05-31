@@ -37,7 +37,7 @@
 # we can use?
 ---
 #
-# Main Loop
+# Game Loop
 * Get Input
 * Update Simulation
 * Draw Frame
