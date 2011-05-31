@@ -7,7 +7,7 @@ module("mario", package.seeall)
 
 tune = {air_steer = false,
         variable_jump = false,
-        air_steer_speed = 3,
+        air_steer_accel = 10,
         jump_vy = -15,
         ground_speed = 5,
         gravity = 50}
@@ -89,27 +89,40 @@ function update(dt)
         end
     end
 
+    -- when on ground, stick drives velocity
     if mario.state == "ground" then
         mario.vx = stick_vx
-        mario.x = mario.x + mario.vx * dt
-    elseif mario.state == "air" then
-        if tune.air_steer then
-            mario.x = mario.x + (mario.vx + stick_x * tune.air_steer_speed) * dt
-        else
-            mario.x = mario.x + mario.vx * dt
-        end
     end
 
-    local accel = tune.gravity
+    -- horizontal acceleration
+    local a_x = 0
+    if mario.state == "air" and tune.air_steer then
+        a_x = stick_x * tune.air_steer_accel
+    end
+
+    -- vertical accelration
+    local a_y = tune.gravity
     if tune.variable_jump and mario.state == "air" and mario.air_phase == 1 then
-        accel = accel / 3
+        a_y = a_y / 3
     end
 
-    mario.y = mario.y + mario.vy * dt + 0.5 * accel * dt * dt
+    -- update position
+    mario.x = mario.x + mario.vx * dt + 0.5 * a_x * dt * dt
+    mario.y = mario.y + mario.vy * dt + 0.5 * a_y * dt * dt
 
-    mario.vx = mario.vx
-    mario.vy = mario.vy + accel * dt
+    -- update velocity
+    mario.vx = mario.vx + a_x * dt
+    mario.vy = mario.vy + a_y * dt
 
+    -- clamp horizontal velocity
+    if mario.vx > tune.ground_speed then
+        mario.vx = tune.ground_speed
+    end
+    if mario.vx < -tune.ground_speed then
+        mario.vx = -tune.ground_speed
+    end
+
+    -- collision detection against ground plane
     if mario.vy > 0 and mario.y > ground_y then
         mario.state = "ground"
         mario.y = ground_y

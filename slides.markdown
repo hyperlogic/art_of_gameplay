@@ -64,7 +64,8 @@
 #
 # Air Control
 * Limited stick control
-* Add small amount to v_h
+* Add small acceleration
+* Clamp v_h
 ---
 ### Jump with Air Control
 @ mario
